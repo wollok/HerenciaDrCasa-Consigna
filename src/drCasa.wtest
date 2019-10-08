@@ -1,0 +1,43 @@
+import personas.*
+
+describe "tests dr casa" {
+var logan = new Persona(celulas = 100000,temperatura = 37)
+var lupus // es autoinmune, amenaza 10000
+var malaria //es infecciosa, amenaza 5000)
+var cameron // medico con dosis = 6000)
+var foreman // medico con dosis = 100)
+var house // es el jefe!
+
+
+fixture{
+	logan.contraer(malaria)
+	logan.contraer(lupus)
+}
+
+test "Logan, al pasar un dia, celulas 90000" {
+	logan.pasarUnDia()
+	assert.equals(90000,logan.celulas())
+}
+test "Logan, al pasar un dia, 42 grados" {
+	logan.pasarUnDia()
+	assert.equals(42,logan.temperatura())
+
+}
+
+test "House con un empleado con dosis alta, cura a logan" {
+	house.contratar(cameron)
+	house.atenderA(logan)
+	assert.that(logan.estaCurada())
+}
+
+test "House con un empleado con dosis baja, no cura a logan" {
+	house.contratar(foreman)
+	house.atenderA(logan)
+	assert.notThat(logan.estaCurada())
+}
+
+test "House sin empleados, al atender, da este error" {
+	assert.throwsExceptionWithType(new SinEmpleadosException(),{house.atenderA(logan)})
+}
+
+}
